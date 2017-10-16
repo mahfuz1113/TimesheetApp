@@ -1,0 +1,43 @@
+{% extends "timesheet/base.html" %}
+{% block body %}
+<p>View: timesheet_data_entry_view_test</p>
+<p>Template: timesheet_dataentry_test.html</p>
+<form method="post">
+        <button type="submit">save</button><br><br>
+    {% csrf_token %}
+
+        {{ form }}
+        <br><br>
+
+
+        {{ formset.non_form_errors.as_ul }}
+        {{ formset.management_form}}
+    <table id="formset" class="form">
+    {% for form in formset.forms %}
+      {% if forloop.first %}
+      <thead><tr>
+        {% for field in form.visible_fields %}
+        <th>{{ field.label|capfirst }}</th>
+        {% endfor %}
+      </tr></thead>
+      {% endif %}
+      <tr class="{% cycle 'row1' 'row2' %}">
+      {% for field in form.visible_fields %}
+        <td>
+        {# Include the hidden fields in the form #}
+        {% if forloop.first %}
+          {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+          {% endfor %}
+        {% endif %}
+          {{ field.errors.as_ul }}
+          {{ field }}
+        </td>
+      {% endfor %}
+      </tr>
+    {% endfor %}
+</table>
+
+
+</form>
+{% endblock body %}

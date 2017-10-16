@@ -1,0 +1,100 @@
+{% extends "timesheet/base.html" %}
+{% block title %}Timesheet List{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <h3>Timesheet Details List View:</h3>
+</div>
+<div class="container">
+    <div class="row">
+        <table class="table table-striped table-hover table-sm">
+            <tr>
+                <th>TimesheetID</th>
+                <th>ID</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Work Code</th>
+                <th>Project</th>
+                <th>Hours</th>
+                <th>Norm</th>
+                <th>RnR</th>
+                <th>Annu</th>
+                <th>Sick</th>
+                <th>Carer</th>
+                <th>LSL</th>
+                <th>Night</th>
+                <th>Noon</th>
+                <th>Bus</th>
+                <th>WComp</th>
+
+            </tr>
+            {% for timesheet in timesheetdetail_list %}
+                {% ifchanged timesheet.timesheet.employee %}
+                    <tr class="table-danger">
+                {% else %}
+                    <tr>
+                {% endifchanged %}
+
+                    <td><a href=/timesheetset1/{{timesheet.timesheet.pk}} class="timesheetlist" id={{timesheet.timesheet.pk}}>Edit({{timesheet.timesheet.pk}})</a></td>
+                    <td>{{timesheet.pk}}</a></td>
+                        {% ifchanged timesheet.timesheet.employee %}
+                            <td>{{ timesheet.timesheet.employee }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endifchanged %}
+                        <td>{{timesheet.workdate|date}}</td>
+                        <td>{{timesheet.workcode.workcode_description}}</td>
+                        <td>{{timesheet.project}}</td>
+                        <td>{{timesheet.hours}}</td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 10 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 80 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 20 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 21 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 25 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 26 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 13 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 14 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 71 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                        <td>
+                            {% if timesheet.workcode.workcode == 22 %}{{timesheet.hours}}{% endif %}
+                        </td>
+                </tr>
+
+
+            {% empty %}
+                <td>No items found</td>
+            {% endfor %}
+
+        </table>
+
+        <div class="row">
+                <div class="container">
+                    <button id="createcar" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1">Create</button>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1" id="btn1">Home</button>
+                </div>
+
+                <div class="container">
+                    {% include "timesheet/_modalform.html" %}
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

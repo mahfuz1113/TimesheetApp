@@ -1,0 +1,8 @@
+{% extends "modalform/base.html" %}
+{% block content %}
+<h2>Do you really want to delete?</h2>
+<form class="" action="" method="post">
+    {% csrf_token %}
+    <input class="btn btn-danger" type="submit" value="Confirm"/>
+</form>
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% extends "timesheet/base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <h4>Timesheet with Details List View: "timesheet_list.html"</h4>
+</div>
+<div class="container">
+    <div>
+        <table class="table table-responsive table-sm table-striped table-bordered">
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Work Code</th>
+                <th>Project</th>
+                <th>Hours</th>
+                <th>Norm</th>
+                <th>RnR</th>
+                <th>Annu</th>
+                <th>Sick</th>
+                <th>Carer</th>
+                <th>LSL</th>
+                <th>Night</th>
+                <th>Noon</th>
+                <th>Bus</th>
+                <th>WCom</th>
+
+            </tr>
+        {% for timesheet in timesheet_list %}
+            <tr colspan=17>
+                <td><a href="{% url 'timesheet:manage_timesheet1' timesheet_id=timesheet.id %}" class="timesheetlist" id={{timesheet.pk}}>{{ timesheet.employee}}({{timesheet.weekenddate.weekenddate|date:'j M y'}})</a></td>
+            </tr>
+                {% for timesheetdetail in timesheetdetails_list %}
+                    {% if timesheetdetail.timesheet == timesheet %}
+
+                            {% ifchanged timesheetdetail.timesheet.employee %}
+                            <tr>
+                            {% else %}
+                            <tr>
+                            {% endifchanged %}
+
+                                {% ifchanged timesheetdetail.timesheet.employee %}
+                                    <td><a href="#"></a>{{ timesheetdetail.timesheet.employee }}</td>
+                                {% else %}
+                                    <td></td>
+                                {% endifchanged %}
+                                <td>{{timesheetdetail.workdate|date:'d-M-y'}}</td>
+                                <td>{{timesheetdetail.workcode.workcode_description}}</td>
+                                <td>{{timesheetdetail.project}}</td>
+                                <td class='hour'>{{timesheetdetail.hours}}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 10 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 80 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 20 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 21 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 25 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 26 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 13 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 14 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 71 %}{{timesheetdetail.hours}}{% endif %}</td>
+                                <td class='hour'>{% if timesheetdetail.workcode.workcode == 22 %}{{timesheetdetail.hours}}{% endif %}</td>
+                            </tr>
+
+                    {% endif%}
+                {% empty %}
+                    <td>No items found</td>
+                {% endfor %}
+        {% endfor %}
+        </table>
+
+        <div class="row">
+                <div class="container">
+                    <button id="createcar" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1">Create</button>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1" id="btn1">Home</button>
+                </div>
+
+                <div class="container">
+                    {% include "timesheet/_modalform.html" %}
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock body %}

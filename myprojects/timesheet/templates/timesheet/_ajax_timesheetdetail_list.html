@@ -1,0 +1,50 @@
+{% block body %}
+    <h2>Timesheet Details List View:</h2>
+
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th>TimesheetID</th>
+            <th>ID</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Work Code</th>
+            <th>Project</th>
+            <th>Hours</th>
+        </tr>
+        {% for timesheet in timesheetdetail_list %}
+
+        <tr>
+            <td><a href=/timesheetset1/{{timesheet.timesheet.pk}} class="timesheetlist" id={{timesheet.timesheet.pk}}>Edit({{timesheet.timesheet.pk}})</a></td>
+            <td>{{timesheet.pk}}</a></td>
+                {% ifchanged timesheet.timesheet.employee %}
+                    <td>{{ timesheet.timesheet.employee }}</td>
+                {% else %}
+                    <td></td>
+                {% endifchanged %}
+                <td>{{timesheet.workdate|date}}</td>
+                <td>{{timesheet.workcode.workcode_description}}</td>
+                <td>{{timesheet.project}}</td>
+                <td>{{timesheet.hours}}</td>
+        </tr>
+
+
+        {% empty %}
+            <td>No items found</td>
+        {% endfor %}
+
+    </table>
+                <div class="row">
+        </div>
+
+        <div class="container">
+            <button id="createcar" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1">Create</button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1" id="btn1">Home</button>
+        </div>
+
+        <div class="container">
+            {% include "timesheet/_modalform.html" %}
+
+        </div>
+
+{% endblock body %}
