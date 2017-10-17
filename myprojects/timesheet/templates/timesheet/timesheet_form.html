@@ -1,0 +1,9 @@
+{% extends "timesheet/base.html" %}
+fsfsd
+{% block body %}
+    <form class="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="button" name="button">Update</button>
+    </form>
+{% endblock body %}

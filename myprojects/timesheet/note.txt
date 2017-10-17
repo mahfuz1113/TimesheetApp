@@ -1,0 +1,63 @@
+from django.db import connection
+from django.db.models import Sum
+from timesheet.models import *
+
+
+timesheetWithRelated = Timesheet.objects.prefetch_related('timesheetdetail_set').filter(weekenddate__weekenddate='2017-01-04').order_by('employee__name','weekenddate')
+
+
+.filter(weekenddate__weekenddate='2017-01-04').order_by('employee__name','weekenddate')
+
+for ts in timesheetWithRelated:
+     for td in ts.timesheetdetail_set.all():
+         td.hours
+
+timesheetWithRelatedHours = timesheetWithRelated.annotate(total_hours = Sum('timesheetdetail__hours'))
+
+timesheet_with_related = TimesheetDetail.objects.filter(id=1).select_related('workcode').all().select_related('project'
+).all().select_related('timesheet').all()
+
+e = TimesheetDetail.objects.get(id=1)
+f = TimesheetDetail.objects.filter(id__lte=1)
+g = TimesheetDetail.objects.filter(id__lte=5)
+h = TimesheetDetail.objects.filter(id__lte=5).selected_related('workcode')
+i = TimesheetDetail.objects.filter(id__lte=5).select_related('workcode').selected_related('project')
+j = TimesheetDetail.objects.filter(id__lte=5).select_related('workcode').select_related('project').select_related('timesheet')
+
+k = TimesheetDetail.objects.filter(id__lte=5)
+l = k.select_related('timesheet') #query db each time#
+m = TimesheetDetail.objects.filter(id__lte=10).prefetch_related('timesheet')
+n = TimesheetDetail.objects.filter(id__lte=10).prefetch_related('timesheet').select_related('workcode')
+
+p = TimesheetDetail.objects.filter(timesheet__weekenddate__weekenddate='2017-01-04').prefetch_related('timesheet').select_related('workcode').select_related('project').annotate(Sum('hours')).order_by('timesheet', 'workdate')
+
+r = p.values('timesheet','workcode').annotate(Sum('hours')).order_by('timesheet','workcode')
+s = p.values('timesheet').annotate(Sum('hours')).order_by()
+
+
+{% for subtot in totalhoursbytimesheetbyworkcode %}
+        {% if subtot.workcode__workcode == 10 and subtot.timesheet == timesheet.id %}{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 80 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 20 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 21 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 25 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 26 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 13 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 14 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 71 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+        {% if subtot.workcode__workcode == 22 and subtot.timesheet == timesheet.id %}<td class='hour'>{{subtot.hours__sum}}</td>{%else%}<td></td>{% endif %}
+{% endfor %}
+
+
+{#
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 10 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 80 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 20 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 21 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 25 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 26 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 13 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 14 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 71 %}{{timesheetdetail.hours}}{% endif %}</td>
+<td class='hour'>{% if timesheetdetail.workcode.workcode == 22 %}{{timesheetdetail.hours}}{% endif %}</td>
+#}

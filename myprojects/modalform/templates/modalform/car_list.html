@@ -1,0 +1,33 @@
+{% extends "modalform/base.html" %}
+
+
+{% block content %}
+    <div class="container carlist" id="carlist">
+        {% for car in car_list %}
+            <a href="{% url 'modalform:carupdateview' pk=car.id %}" id={{car.pk}}>
+                <p>{{car.make}} -- {{car.model}} -- {{car.door}}</p>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <button id="createcar" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1">Create</button>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Modal1" id="btn1">Home</button>
+    </div>
+
+    <div class="container">
+
+    </div>
+
+    {% include "modalform/_modalform.html" %}
+
+
+
+{% endblock content %}
+
+
+{% block customscript %}
+
+<!-- Update a Car by clicking its link -->
+    
+{% endblock customscript %}

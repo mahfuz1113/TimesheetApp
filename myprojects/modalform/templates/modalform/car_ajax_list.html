@@ -1,0 +1,5 @@
+{% for car in car_list %}
+    <a href="{% url 'modalform:carupdateview' pk=car.id %}" id={{car.pk}}>
+        <p>{{car.make}} -- {{car.model}} -- {{car.door}}</p>
+    </a>
+{% endfor %}

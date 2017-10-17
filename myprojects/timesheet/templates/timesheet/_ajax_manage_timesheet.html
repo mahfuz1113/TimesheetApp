@@ -1,0 +1,66 @@
+{% block body %}
+<p>View: manage_timesheet1</p>
+<p>Template: _axax_manage-timesheet.html</p>
+<form method="post" class="timesheetsetAjaxForm" id={{timesheetid}}>
+<button type="submit" name="button">Save</button>
+    {% csrf_token %}
+    {{ children_formset.management_form }}
+    {{ children_formset.non_form_errors }}
+<table class="table table-sm">
+
+        {% for child_form in children_formset.forms %}
+            {% if forloop.first %}
+                <thead><tr>
+                    {% for field in child_form.visible_fields  %}
+                        <th>{{ field.label|capfirst}}</th>
+                    {% endfor %}
+                </tr></thead>
+                {% endif %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                {% for field in child_form.visible_fields %}
+                    <td>
+                        {# Include hidden fields #}
+                        {% if forloop.first %}
+                            {% for hidden in child_form.hidden_fields  %}
+                                {{ hidden }}
+                            {% endfor %}
+                        {% endif %}
+                        {{ field.errors.as_ul }}
+                        {{ field }}
+                    </td>
+                {% endfor %}
+
+            </tr>
+            {% if child_form.nested %}
+                    {{ child_form.nested.management_form }}
+                    {{ child_form.nested.non_form_errors }}
+                    {% for nested_form in child_form.nested.forms %}
+                        {% if forloop.first %}
+                            <thead><tr>
+                                    {% for field in nested_form.visible_fields  %}
+                                        <th>{{ field.label|capfirst}}</th>
+                                    {% endfor %}
+                            </tr></thead>
+                        {% endif %}
+                        <tr class="{% cycle 'row1' 'row2' %}">
+                            {% for field in nested_form.visible_fields %}
+                                <td>
+                                    {# Include the hidden fields in the form #}
+                                    {% if forloop.first %}
+                                        {% for hidden in nested_form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor%}
+                                    {% endif %}
+                                    {{ field.errors.as_ul }}
+                                    {{ field }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+</table>
+</form>
+
+{% endblock body %}

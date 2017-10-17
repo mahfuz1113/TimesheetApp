@@ -1,0 +1,14 @@
+.modal.modal-wide .modal-dialog {
+  width: 100%;
+  max-width: 100%;
+  min-height: auto;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+ td.hour{
+     width:60px;
+     text-align: center;
+ }

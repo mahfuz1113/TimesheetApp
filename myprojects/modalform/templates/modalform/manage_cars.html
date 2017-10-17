@@ -1,0 +1,9 @@
+{% extends "modalform/base.html" %}
+
+{% block content %}
+<form class="" method="post">
+    {% csrf_token %}
+    {{formset.as_table }}
+    <button type="submit" name="button">Save</button>
+</form>
+{% endblock content %}
