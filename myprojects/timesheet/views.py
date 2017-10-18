@@ -342,7 +342,7 @@ def manage_timesheet1(request, timesheet_id):
             print('***************************************************************************************************************************')
             print('***************************************************************************************************************************')
             print('***************************************************************************************************************************')
-            # Looking at a better way of doing this. Looping each form and each cell may be be a better option....#
+            # This development will be in a saperate branch called 'alternet-time-save'#
             for form in formset:
                 print('*************************** in formset loop *****************************************************')
                 obj = form.save(commit=False)
