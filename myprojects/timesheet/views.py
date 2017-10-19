@@ -336,9 +336,7 @@ def manage_timesheet1(request, timesheet_id):
         if formset.is_valid():
             print()
             print()
-
             print()
-
             print('***************************************************************************************************************************')
             print('***************************************************************************************************************************')
             print('***************************************************************************************************************************')
@@ -351,47 +349,47 @@ def manage_timesheet1(request, timesheet_id):
                 print('**** Starting Clean_data Loop ***********************************************************************************************************************')
 
                 for k,v in form.cleaned_data.items():
-                    print(k,v)
+                    print(('k-->  {} \t\t  v-->  {}').format(k,v))
                 # obj.project = Project.objects.get(id=3)
-                if form.cleaned_data['normal'] is not None:
+                if form.cleaned_data['10'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=10)
-                    obj.hours = form.cleaned_data['normal']
+                    obj.hours = form.cleaned_data['10']
                     print(obj.hours)
-                elif form.cleaned_data['rnr'] is not None:
+                elif form.cleaned_data['80'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=80)
-                    obj.hours = form.cleaned_data['rnr']
+                    obj.hours = form.cleaned_data['80']
                     print(obj.hours)
-                elif form.cleaned_data['annual_leave'] is not None:
+                elif form.cleaned_data['20'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=20)
-                    obj.hours = form.cleaned_data['annual_leave']
+                    obj.hours = form.cleaned_data['20']
                     print(obj.hours)
-                elif form.cleaned_data['personal_leave'] is not None:
+                elif form.cleaned_data['21'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=21)
-                    obj.hours = form.cleaned_data['personal_leave']
+                    obj.hours = form.cleaned_data['21']
                     print(obj.hours)
-                elif form.cleaned_data['carers_leave'] is not None:
+                elif form.cleaned_data['25'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=25)
-                    obj.hours = form.cleaned_data['carers_leave']
+                    obj.hours = form.cleaned_data['25']
                     print(obj.hours)
-                elif form.cleaned_data['long_service_leave'] is not None:
+                elif form.cleaned_data['26'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=26)
-                    obj.hours = form.cleaned_data['long_service_leave']
+                    obj.hours = form.cleaned_data['26']
                     print(obj.hours)
-                elif form.cleaned_data['night_shift'] is not None:
+                elif form.cleaned_data['13'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=13)
-                    obj.hours = form.cleaned_data['night_shift']
+                    obj.hours = form.cleaned_data['13']
                     print(obj.hours)
-                elif form.cleaned_data['afternoon_shift'] is not None:
+                elif form.cleaned_data['14'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=14)
-                    obj.hours = form.cleaned_data['afternoon_shift']
+                    obj.hours = form.cleaned_data['14']
                     print(obj.hours)
-                elif form.cleaned_data['bus_driving'] is not None:
+                elif form.cleaned_data['71'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=71)
-                    obj.hours = form.cleaned_data['bus_driving']
+                    obj.hours = form.cleaned_data['71']
                     print(obj.hours)
-                elif form.cleaned_data['work_comp'] is not None:
+                elif form.cleaned_data['22'] is not None:
                     obj.workcode = Workcode.objects.get(workcode=22)
-                    obj.hours = form.cleaned_data['work_comp']
+                    obj.hours = form.cleaned_data['22']
                     print(obj.hours)
 
             # formset.save()

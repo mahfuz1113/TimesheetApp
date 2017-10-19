@@ -169,16 +169,16 @@ class BaseTimesheetInlineFormSet(BaseInlineFormSet):
 
         def add_fields(self, form, index):
             super(BaseTimesheetInlineFormSet, self).add_fields(form, index)
-            form.fields['10']               = forms.IntegerField(max_value=16, min_value=0, label='Norm', required=False)
-            form.fields['80']                  = forms.IntegerField(max_value=16, min_value=0, label='RnR', required=False)
-            form.fields['20']         = forms.IntegerField(max_value=16, min_value=0, label='Annu', required=False)
-            form.fields['21']       = forms.IntegerField(max_value=16, min_value=0, label='Sick', required=False)
-            form.fields['25']         = forms.IntegerField(max_value=16, min_value=0, label="Carer", required=False)
+            form.fields['10']   = forms.IntegerField(max_value=16, min_value=0, label='Norm', required=False)
+            form.fields['80']   = forms.IntegerField(max_value=16, min_value=0, label='RnR', required=False)
+            form.fields['20']   = forms.IntegerField(max_value=16, min_value=0, label='Annu', required=False)
+            form.fields['21']   = forms.IntegerField(max_value=16, min_value=0, label='Sick', required=False)
+            form.fields['25']   = forms.IntegerField(max_value=16, min_value=0, label="Carer", required=False)
             form.fields['26']   = forms.IntegerField(max_value=16, min_value=0, label='LSL', required=False)
-            form.fields['13']          = forms.IntegerField(max_value=16, min_value=0, label='Night', required=False)
-            form.fields['14']      = forms.IntegerField(max_value=16, min_value=0, label="Noon", required=False)
-            form.fields['71']          = forms.IntegerField(max_value=16, min_value=0, label='Bus', required=False)
-            form.fields['22']            = forms.IntegerField(max_value=16, min_value=0, label='WComp', required=False)
+            form.fields['13']   = forms.IntegerField(max_value=16, min_value=0, label='Night', required=False)
+            form.fields['14']   = forms.IntegerField(max_value=16, min_value=0, label="Noon", required=False)
+            form.fields['71']   = forms.IntegerField(max_value=16, min_value=0, label='Bus', required=False)
+            form.fields['22']   = forms.IntegerField(max_value=16, min_value=0, label='WComp', required=False)
 
 TimesheetFormSetNew1 = modelformset_factory(models.Timesheet,
                                             form=TimesheetForm,
