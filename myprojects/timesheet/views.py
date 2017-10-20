@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django import forms
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.db.models import Sum
 from django.views.generic import (ListView,
                                   DetailView,
@@ -324,15 +325,12 @@ def manage_timesheet1(request, timesheet_id):
     """Edit children and their addresses for a single parent."""
 
     initial_data = [{'workcode': 1, 'project':1, 'workdate': '2017-12-29', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-12-30', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-12-31', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-01-01', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-01-02', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-01-03', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-01-04', 'hours':0, }]
+                    {'workcode': 1, 'project':1, 'workdate': '2017-12-30', 'hours':0, }]
+
     timesheet = Timesheet.objects.get(pk=timesheet_id)
     if request.method == 'POST':
-        formset = TimesheetDetailInlineFormset(request.POST, request.FILES, instance=timesheet, initial=initial_data)
+        formset = TimesheetDetailInlineFormset(request.POST, request.FILES, instance=timesheet)
+
         if formset.is_valid():
             print()
             print()
@@ -341,64 +339,45 @@ def manage_timesheet1(request, timesheet_id):
             print('***************************************************************************************************************************')
             print('***************************************************************************************************************************')
             # This development will be in a saperate branch called 'alternet-time-save'#
+            converted_data = []
+            wc_list = ['10','80','20,','21','25','26','13','14','71','22']
+            # with transaction.atomic():
             for form in formset:
-                print('*************************** in formset loop *****************************************************')
-                obj = form.save(commit=False)
-                obj.timesheet = timesheet
-                obj.workcode = Workcode.objects.get(id=5)
-                print('**** Starting Clean_data Loop ***********************************************************************************************************************')
+                print('*************************** in formset loop doing something with a form *****************************************************')
 
-                for k,v in form.cleaned_data.items():
-                    print(('k-->  {} \t\t  v-->  {}').format(k,v))
-                # obj.project = Project.objects.get(id=3)
-                if form.cleaned_data['10'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=10)
-                    obj.hours = form.cleaned_data['10']
-                    print(obj.hours)
-                elif form.cleaned_data['80'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=80)
-                    obj.hours = form.cleaned_data['80']
-                    print(obj.hours)
-                elif form.cleaned_data['20'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=20)
-                    obj.hours = form.cleaned_data['20']
-                    print(obj.hours)
-                elif form.cleaned_data['21'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=21)
-                    obj.hours = form.cleaned_data['21']
-                    print(obj.hours)
-                elif form.cleaned_data['25'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=25)
-                    obj.hours = form.cleaned_data['25']
-                    print(obj.hours)
-                elif form.cleaned_data['26'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=26)
-                    obj.hours = form.cleaned_data['26']
-                    print(obj.hours)
-                elif form.cleaned_data['13'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=13)
-                    obj.hours = form.cleaned_data['13']
-                    print(obj.hours)
-                elif form.cleaned_data['14'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=14)
-                    obj.hours = form.cleaned_data['14']
-                    print(obj.hours)
-                elif form.cleaned_data['71'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=71)
-                    obj.hours = form.cleaned_data['71']
-                    print(obj.hours)
-                elif form.cleaned_data['22'] is not None:
-                    obj.workcode = Workcode.objects.get(workcode=22)
-                    obj.hours = form.cleaned_data['22']
-                    print(obj.hours)
+                if form.has_changed():
+                    print('form has changed')
+                    obj = form.save(commit=False)
+                    obj.timesheet = timesheet
+                    obj.workcode = Workcode.objects.get(id=5)
+                    print('******************** Starting Clean_data Loop *******************************************************************************************************')
+                    # proj = form.cleaned_data['project']
+                    # form_data = {}
+                    for k,v in form.cleaned_data.items():
+                        if k in wc_list and v is not None:
+                            form_data = {}
+                            form_data['timesheet'] = timesheet
+                            form_data['workcode'] = Workcode.objects.get(workcode=k)
+                            form_data['project'] = form.cleaned_data['project']
+                            form_data['workdate'] = form.cleaned_data['workdate']
+                            form_data['hours'] = v
+                            # print(form_data)
+                            converted_data.append(form_data)
+            print(converted_data)
+                    # obj.project = Project.objects.get(id=3)
 
+            formset_new = TimesheetDetailFormSet1(initial = converted_data)
+            print(formset_new.is_valid())
+            # formset_new.save()
             # formset.save()
             # return HttpResponseRedirect(reverse('nestedformset:nestedformset', 'parent_id'= parent_id))
             return redirect('timesheet:timesheetlist')
         else:
             print(formset.errors)
     else:
-        formset = TimesheetDetailInlineFormset(instance=timesheet, initial=initial_data)
+        # formset = TimesheetDetailInlineFormset(instance=timesheet, initial=initial_data)
+        formset = TimesheetDetailInlineFormset(instance=timesheet)
+
 
     if request.is_ajax():
         return render(request, 'timesheet/_ajax_manage_timesheet.html', {

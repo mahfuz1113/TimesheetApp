@@ -33,6 +33,8 @@ TimesheetFormSet = forms.inlineformset_factory(models.Timesheet,
                                                 form=TimesheetDetailPreForm,
                                                 extra=7, max_num=7)
 
+
+
 class BaseTimesheetFormSet(forms.BaseFormSet):
     def add_fields(self, form, index):
         super(BaseTimesheetFormSet, self).add_fields(form, index)
@@ -74,7 +76,7 @@ TimesheetDetailFormSet = forms.formset_factory(models.TimesheetDetail,
                                             formset=BaseTimesheetFormSet
                                             )
 
-
+TimesheetDetailFormSet1 = forms.formset_factory(models.TimesheetDetail)
 
 ############################################################################################
 ############################################################################################
@@ -180,6 +182,11 @@ class BaseTimesheetInlineFormSet(BaseInlineFormSet):
             form.fields['71']   = forms.IntegerField(max_value=16, min_value=0, label='Bus', required=False)
             form.fields['22']   = forms.IntegerField(max_value=16, min_value=0, label='WComp', required=False)
 
+        # def __init__(self, *args, **kwargs):
+        #     initial = kwargs.pop('initial', {})
+        #     kwargs['initial'] = initial
+        #     super(BaseTimesheetInlineFormSet, self).__init__(*args, **kwargs)
+
 TimesheetFormSetNew1 = modelformset_factory(models.Timesheet,
                                             form=TimesheetForm,
                                             formset=BaseTimesheetFormsetNew1,
@@ -196,4 +203,4 @@ TimesheetDetailInlineFormset = inlineformset_factory(models.Timesheet,
                                                     formset=BaseTimesheetInlineFormSet,
                                                     # fields=('workdate','project'),
                                                     fields='__all__',
-                                                    extra=7, max_num=9)
+                                                    extra=7, max_num=7)
