@@ -10,7 +10,7 @@ class Workcode(models.Model):
     workcode_serial = models.SmallIntegerField()
 
     def __str__(self):
-        return ('{} {} ({})').format(self.workcode_serial, self.workcode_description, self.workcode)
+        return ('{} {} ({})').format(self.workcode_serial, self.workcode_short, self.workcode)
 
 
 class Project(models.Model):
@@ -52,7 +52,10 @@ class TimesheetDetail(models.Model):
     hours = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return ('{} // {} // {}H').format(self.timesheet.employee.name,self.workdate,self.hours)
+        return ('{} __ {} __ {} __ {} __ {}H').format(self.timesheet.employee.name,self.workdate,self.project, self.workcode, self.hours)
 
     def get_absolute_url(self):
         return reverse('timesheet:timesheetdetail', kwargs={'pk':self.pk})
+
+    class Meta:
+        unique_together = ('timesheet','workcode','project','workdate')

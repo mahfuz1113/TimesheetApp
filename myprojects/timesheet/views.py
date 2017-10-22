@@ -213,84 +213,144 @@ def timesheet_with_extra_field(request):
 def timesheet_data_entry_view_test(request):
     """ Timesheet view in a grid form. Referenced TimesheetForm has extra field for each workcode """
     # timesheet_instance = Timesheet.objects.get(pk=60)
-    timesheet_instance = get_object_or_404(Timesheet, pk=60)
-    # initial_data1 = [{'employee':1, 'weekenddate':1}]
-    # initial_data = [{'workcode': 3, 'project':2, 'workdate': '2017-01-02', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-03', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-04', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-05', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-06', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-07', 'hours':0, },
-    #                 {'workcode': 3, 'project':2, 'workdate': '2017-01-08', 'hours':0, }]
-    initial_data = [{'workcode': 3, 'project':2, 'workdate': '2017-01-02', 'hours':0, 'workcode1':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-03', 'hours':0, 'workcode1':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-04', 'hours':0, 'workcode1':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-05', 'hours':0, 'workcode2':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-06', 'hours':0, 'workcode2':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-07', 'hours':0, 'workcode2':3 },
-                    {'workcode': 3, 'project':2, 'workdate': '2017-01-08', 'hours':0, 'workcode2':3 }]
+    print(request.method)
+    timesheet_instance = get_object_or_404(Timesheet, pk=20)
+    print()
+    print()
+    # print(timesheet_instance)
+    print()
+    print()
+    print()
 
+    # timesheet_detail_data = TimesheetDetail.objects.filter(timesheet=timesheet_instance).select_related('timesheet').select_related('timesheet__employee').select_related('workcode').select_related('project').annotate(Sum('hours')).order_by('timesheet', 'workdate')
+    timesheet_detail_data = TimesheetDetail.objects.filter(timesheet=timesheet_instance).select_related('timesheet').prefetch_related('timesheet__employee').prefetch_related('workcode').prefetch_related('project').order_by('timesheet', 'workdate')
+
+
+    print(timesheet_detail_data)
+    print()
+    print()
+    print()
+    initial_data = []
+    # dict_key_list = ['workcode':,'project','workdate','workcode_10','workcode_80','workcode_20,','workcode_21','workcode_25','workcode_26','workcode_13','workcode_14','workcode_71','workcode_22']
+    for ts in timesheet_detail_data:
+        print('hello')
+
+        for initd in initial_data:
+            print('hi')
+            print(ts)
+            print(initd)
+            print('********************')
+            print('********************')
+            print('********************')
+            print('********************')
+
+            if initd['project']==ts.project and initd['workdate'] == ts.workdate:
+                print('match found')
+                wc = 'workcode_'+str(ts.workcode.workcode)
+                td_dict[wc] = ts.hours
+                break
+        else:
+            td_dict = { 'workcode': None,'project':None,'workdate':None,
+                        'workcode_10':None,'workcode_80':None,'workcode_20':None,
+                        'workcode_21':None,'workcode_25':None,'workcode_26':None,
+                        'workcode_13':None,'workcode_14':None,'workcode_71':None,
+                        'workcode_22':None}
+            wc = 'workcode_'+str(ts.workcode.workcode)
+            td_dict[wc] = ts.hours
+            td_dict['workdate'] = ts.workdate
+            td_dict['project'] = ts.project
+            td_dict['workcode'] = ts.workcode.workcode
+
+            initial_data.append(td_dict)
+
+    print(initial_data)
 
     if request.method == "POST":
-        timesheet_form = TimesheetForm(request.POST)
-
-        if timesheet_form.is_valid():
-            emp=timesheet_form.cleaned_data['employee']
-            we=timesheet_form.cleaned_data['weekenddate']
-            print(emp)
-            print(we)
-            obj = Timesheet.objects.get(employee=emp,weekenddate=we)
-            print(obj)
-            # created_timesheet = timesheet_form.save(commit=False)
-            # newtimesheet_id = created_timesheet.id
-            newtimesheet_id = obj.id
-
-            newtimesheet = created_timesheet
+        # timesheet_form = TimesheetForm(request.POST)
+        # print(timesheet_form)
             formset = TimesheetFormSet(request.POST, request.FILES,
-                                        instance=created_timesheet,
+                                        instance=timesheet_instance,
                                         initial=initial_data)
-
+        # print('************************************************************************************ timesheet form ************')
+        # # print(timesheet_form)
+        # print()
+        # print('************************************************************************************ checking if timesheet form is valid ************')
+        #
             if formset.is_valid():
                 print('formset valid')
                 # created_timesheet.save()
                 # formset.save()
                 for form in formset:
-                    print('in formset loop')
-                    obj = form.save(commit=False)
-                    obj.timesheet = newtimesheet
-                    obj.workcode = Workcode.objects.get(id=5)
-                    # obj.project = Project.objects.get(id=3)
-                    if form.cleaned_data['workcode1'] is not None:
-                        obj.workcode = Workcode.objects.get(id=1)
-                        obj.hours = form.cleaned_data['workcode1']
-                    elif form.cleaned_data['workcode2'] is not None:
-                        obj.workcode = Workcode.objects.get(id=4)
-                        obj.hours = form.cleaned_data['workcode2']
-                    elif form.cleaned_data['workcode3'] is not None:
-                        obj.workcode = Workcode.objects.get(id=5)
-                        obj.hours = form.cleaned_data['workcode3']
-                    elif form.cleaned_data['workcode4'] is not None:
-                        obj.workcode = Workcode.objects.get(id=6)
-                        obj.hours = form.cleaned_data['workcode4']
-                    print('Line before save')
-                    # obj.save()
-                formset.save()
-                return HttpResponseRedirect(reverse('timesheet:timesheetlist'))
+                    print('*************************** in formset loop doing something with a form *****************************************************')
+                    print(form.changed_data)
+
+                    if form.has_changed():
+                        print()
+                        print('form has changed')
+                        # print(form.cleaned_data['workdate'])
+                        print('******************** Starting Clean_data Loop *******************************************************************************************************')
+                        wc_list = ['workcode_10','workcode_80','workcode_20','workcode_21','workcode_25','workcode_26','workcode_13','workcode_14','workcode_71','workcode_22']
+
+                        for k,v in form.cleaned_data.items():
+                            # print(('loop1 {} {}').format(k,v))
+
+                            if k in wc_list and k in form.changed_data:
+                                # print(('in both wc_list & changed_data <>{} - {}<>').format(k,v))
+                                # print(k)
+                                if v is not None:
+                                    print(('V is not none {} {}').format(k,v))
+
+                                    obj, created = TimesheetDetail.objects.update_or_create(
+                                            # pk = form.cleaned_data['id'].id,
+                                            timesheet = timesheet_instance,
+                                            workcode = Workcode.objects.get(workcode=k[-2:]),
+                                            project = form.cleaned_data['project'],
+                                            workdate = form.cleaned_data['workdate'],
+                                            defaults = {
+                                                'timesheet' : timesheet_instance,
+                                                'workcode' : Workcode.objects.get(workcode=k[-2:]),
+                                                'project' : form.cleaned_data['project'],
+                                                'workdate' : form.cleaned_data['workdate'],
+                                                'hours' : v
+                                                }
+                                    )
+                                    print(('{} {}').format(created, obj))
+                                elif v is None:
+                                    print(('V is none {} {}').format(k,v))
+                                    obj = get_object_or_404(TimesheetDetail,
+                                            timesheet = timesheet_instance,
+                                            workcode = Workcode.objects.get(workcode=k[-2:]),
+                                            project = form.cleaned_data['project'],
+                                            workdate = form.cleaned_data['workdate'])
+                                    obj.delete()
+                # formset.save()
+
+                return HttpResponseRedirect(reverse('timesheet:ts-dataentry'))
+
             else:
                 print('formset not valid')
                 print(formset.errors)
                 return render(request, 'timesheet/timesheet_dataentry_test.html',
                                     {'form':form, 'formset':formset})
-        else:
-            print(timesheet_form.errors)
-            return HttpResponse('error')
+        # else:
+        #     print(timesheet_form.errors)
+        #     # return HttpResponse('error')
+        #     return render(request, 'timesheet/timesheet_dataentry_test.html',
+        #                         {'form':timesheet_form, 'formset':formset})
     else:
-        form = TimesheetForm()
+
+        # form = TimesheetForm(instance=timesheet_instance)
         formset = TimesheetFormSet(initial=initial_data)
 
         return render(request, 'timesheet/timesheet_dataentry_test.html',
-                            {'form':form, 'formset':formset})
+                            {'formset':formset})
 
+
+#####################################################################
+#####################################################################
+#####################################################################
+#####################################################################
+#####################################################################
 
 def manage_timesheet(request, user_id):
     """Edit children and their addresses for a single parent."""
@@ -320,63 +380,141 @@ def manage_timesheet(request, user_id):
 
 #####################################################################
 #####################################################################
+#####################################################################
+#####################################################################
+#####################################################################
+
 
 def manage_timesheet1(request, timesheet_id):
-    """Edit children and their addresses for a single parent."""
 
-    initial_data = [{'workcode': 1, 'project':1, 'workdate': '2017-12-29', 'hours':0, },
-                    {'workcode': 1, 'project':1, 'workdate': '2017-12-30', 'hours':0, }]
+    print(request.method)
+    timesheet_instance = get_object_or_404(Timesheet, pk=timesheet_id)
+    print()
+    print()
+    # print(timesheet_instance)
+    print()
+    print()
+    print()
 
-    timesheet = Timesheet.objects.get(pk=timesheet_id)
-    if request.method == 'POST':
-        formset = TimesheetDetailInlineFormset(request.POST, request.FILES, instance=timesheet)
+    # timesheet_detail_data = TimesheetDetail.objects.filter(timesheet=timesheet_instance).select_related('timesheet').select_related('timesheet__employee').select_related('workcode').select_related('project').annotate(Sum('hours')).order_by('timesheet', 'workdate')
+    timesheet_detail_data = TimesheetDetail.objects.filter(timesheet=timesheet_instance).select_related('timesheet').prefetch_related('timesheet__employee').prefetch_related('workcode').prefetch_related('project').order_by('timesheet', 'workdate')
 
-        if formset.is_valid():
-            print()
-            print()
-            print()
-            print('***************************************************************************************************************************')
-            print('***************************************************************************************************************************')
-            print('***************************************************************************************************************************')
-            # This development will be in a saperate branch called 'alternet-time-save'#
-            converted_data = []
-            wc_list = ['10','80','20,','21','25','26','13','14','71','22']
-            # with transaction.atomic():
-            for form in formset:
-                print('*************************** in formset loop doing something with a form *****************************************************')
 
-                if form.has_changed():
-                    print('form has changed')
-                    obj = form.save(commit=False)
-                    obj.timesheet = timesheet
-                    obj.workcode = Workcode.objects.get(id=5)
-                    print('******************** Starting Clean_data Loop *******************************************************************************************************')
-                    # proj = form.cleaned_data['project']
-                    # form_data = {}
-                    for k,v in form.cleaned_data.items():
-                        if k in wc_list and v is not None:
-                            form_data = {}
-                            form_data['timesheet'] = timesheet
-                            form_data['workcode'] = Workcode.objects.get(workcode=k)
-                            form_data['project'] = form.cleaned_data['project']
-                            form_data['workdate'] = form.cleaned_data['workdate']
-                            form_data['hours'] = v
-                            # print(form_data)
-                            converted_data.append(form_data)
-            print(converted_data)
-                    # obj.project = Project.objects.get(id=3)
+    print(timesheet_detail_data)
+    print()
+    print()
+    print()
+    initial_data = []
+    # dict_key_list = ['workcode':,'project','workdate','workcode_10','workcode_80','workcode_20,','workcode_21','workcode_25','workcode_26','workcode_13','workcode_14','workcode_71','workcode_22']
+    for ts in timesheet_detail_data:
+        print('hello')
 
-            formset_new = TimesheetDetailFormSet1(initial = converted_data)
-            print(formset_new.is_valid())
-            # formset_new.save()
-            # formset.save()
-            # return HttpResponseRedirect(reverse('nestedformset:nestedformset', 'parent_id'= parent_id))
-            return redirect('timesheet:timesheetlist')
+        for initd in initial_data:
+            print('hi')
+            print(ts)
+            print(initd)
+            print('********************')
+            print('********************')
+            print('********************')
+            print('********************')
+
+            if initd['project']==ts.project and initd['workdate'] == ts.workdate:
+                print('match found')
+                wc = 'workcode_'+str(ts.workcode.workcode)
+                td_dict[wc] = ts.hours
+                break
         else:
-            print(formset.errors)
+            td_dict = { 'workcode': None,'project':None,'workdate':None,
+                        'workcode_10':None,'workcode_80':None,'workcode_20':None,
+                        'workcode_21':None,'workcode_25':None,'workcode_26':None,
+                        'workcode_13':None,'workcode_14':None,'workcode_71':None,
+                        'workcode_22':None}
+            wc = 'workcode_'+str(ts.workcode.workcode)
+            td_dict[wc] = ts.hours
+            td_dict['workdate'] = ts.workdate
+            td_dict['project'] = ts.project
+            td_dict['workcode'] = ts.workcode.workcode
+
+            initial_data.append(td_dict)
+
+    print(initial_data)
+
+    if request.method == "POST":
+        # timesheet_form = TimesheetForm(request.POST)
+        # print(timesheet_form)
+            formset = TimesheetFormSet(request.POST, request.FILES,
+                                        instance=timesheet_instance,
+                                        initial=initial_data)
+        # print('************************************************************************************ timesheet form ************')
+        # # print(timesheet_form)
+        # print()
+        # print('************************************************************************************ checking if timesheet form is valid ************')
+        #
+            if formset.is_valid():
+                print('formset valid')
+                # created_timesheet.save()
+                # formset.save()
+                for form in formset:
+                    print('*************************** in formset loop doing something with a form *****************************************************')
+                    print(form.changed_data)
+
+                    if form.has_changed():
+                        print()
+                        print('form has changed')
+                        # print(form.cleaned_data['workdate'])
+                        print('******************** Starting Clean_data Loop *******************************************************************************************************')
+                        wc_list = ['workcode_10','workcode_80','workcode_20','workcode_21','workcode_25','workcode_26','workcode_13','workcode_14','workcode_71','workcode_22']
+
+                        for k,v in form.cleaned_data.items():
+                            # print(('loop1 {} {}').format(k,v))
+
+                            if k in wc_list and k in form.changed_data:
+                                # print(('in both wc_list & changed_data <>{} - {}<>').format(k,v))
+                                # print(k)
+                                if v is not None:
+                                    print(('V is not none {} {}').format(k,v))
+
+                                    obj, created = TimesheetDetail.objects.update_or_create(
+                                            # pk = form.cleaned_data['id'].id,
+                                            timesheet = timesheet_instance,
+                                            workcode = Workcode.objects.get(workcode=k[-2:]),
+                                            project = form.cleaned_data['project'],
+                                            workdate = form.cleaned_data['workdate'],
+                                            defaults = {
+                                                'timesheet' : timesheet_instance,
+                                                'workcode' : Workcode.objects.get(workcode=k[-2:]),
+                                                'project' : form.cleaned_data['project'],
+                                                'workdate' : form.cleaned_data['workdate'],
+                                                'hours' : v
+                                                }
+                                    )
+                                    print(('{} {}').format(created, obj))
+                                elif v is None:
+                                    print(('V is none {} {}').format(k,v))
+                                    obj = get_object_or_404(TimesheetDetail,
+                                            timesheet = timesheet_instance,
+                                            workcode = Workcode.objects.get(workcode=k[-2:]),
+                                            project = form.cleaned_data['project'],
+                                            workdate = form.cleaned_data['workdate'])
+                                    obj.delete()
+                # formset.save()
+
+                return HttpResponseRedirect(reverse('timesheet:ts-dataentry'))
+
+            else:
+                print('formset not valid')
+                print(formset.errors)
+                return render(request, 'timesheet/timesheet_dataentry_test.html',
+                                    {'form':form, 'formset':formset})
+        # else:
+        #     print(timesheet_form.errors)
+        #     # return HttpResponse('error')
+        #     return render(request, 'timesheet/timesheet_dataentry_test.html',
+        #                         {'form':timesheet_form, 'formset':formset})
     else:
-        # formset = TimesheetDetailInlineFormset(instance=timesheet, initial=initial_data)
-        formset = TimesheetDetailInlineFormset(instance=timesheet)
+
+        # form = TimesheetForm(instance=timesheet_instance)
+        formset = TimesheetFormSet(initial=initial_data)
 
 
     if request.is_ajax():

@@ -61,3 +61,43 @@ s = p.values('timesheet').annotate(Sum('hours')).order_by()
 <td class='hour'>{% if timesheetdetail.workcode.workcode == 71 %}{{timesheetdetail.hours}}{% endif %}</td>
 <td class='hour'>{% if timesheetdetail.workcode.workcode == 22 %}{{timesheetdetail.hours}}{% endif %}</td>
 #}
+
+
+[
+{'timesheet':   <Timesheet: (20) Amy Michael --> 2017-01-04>,
+'workcode':     <Workcode: 1 Normal (10)>,
+'project':      <Project: 17-005>,
+'workdate':     datetime.date(2016, 12, 29),
+'hours':        3,
+'id':           <TimesheetDetail: Amy Michael // 2016-12-29 // 14H>},
+
+{'timesheet':   <Timesheet: (20) Amy Michael --> 2017-01-04>,
+'workcode':     <Workcode: 2 RnR (80)>,
+'project':      <Project: 17-005>,
+'workdate':     datetime.date(2016, 12, 29),
+'hours':        5,
+'id':           <TimesheetDetail: Amy Michael // 2016-12-29 // 14H>}
+]
+
+
+[
+{'workcode': 1, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 2, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 2, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 3, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 4, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 5, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 6, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 7, 'project': None, 'workdate': None, 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None}
+]
+
+
+[
+{'workcode': 80, 'project': <Project: 17-004>, 'workdate': datetime.date(2016, 12, 30), 'workcode_10': None, 'workcode_80': 12, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 20, 'project': <Project: 17-006>, 'workdate': datetime.date(2016, 12, 31), 'workcode_10': None, 'workcode_80': None, 'workcode_20': 12, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 21, 'project': <Project: 17-001>, 'workdate': datetime.date(2017, 1, 1), 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': 12, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 25, 'project': <Project: 17-002>, 'workdate': datetime.date(2017, 1, 2), 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': 12, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 26, 'project': <Project: 17-001>, 'workdate': datetime.date(2017, 1, 3), 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': 12, 'workcode_13': None, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 13, 'project': <Project: 17-002>, 'workdate': datetime.date(2017, 1, 4), 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': 12, 'workcode_14': None, 'workcode_71': None, 'workcode_22': None},
+{'workcode': 10, 'project': <Project: 17-003>, 'workdate': datetime.date(2017, 12, 29), 'workcode_10': 6, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': None,'workcode_71': None, 'workcode_22': None},
+{'workcode': 14, 'project': <Project: 17-003>, 'workdate': datetime.date(2017, 12, 29), 'workcode_10': None, 'workcode_80': None, 'workcode_20': None, 'workcode_21': None, 'workcode_25': None, 'workcode_26': None, 'workcode_13': None, 'workcode_14': 6, 'workcode_71': None, 'workcode_22': None}]

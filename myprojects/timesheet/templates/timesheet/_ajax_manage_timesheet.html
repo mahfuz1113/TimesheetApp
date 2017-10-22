@@ -1,8 +1,7 @@
 {% block body %}
 <p>View: manage_timesheet1</p>
-<p>Template: _axax_manage-timesheet.html</p>
+<p>Template: _axax_manage_timesheet.html</p>
 <form method="post" class="timesheetsetAjaxForm" id={{timesheetid}}>
-<button type="submit" name="button">Save</button>
     {% csrf_token %}
     {{ children_formset.management_form }}
     {{ children_formset.non_form_errors }}
@@ -59,7 +58,7 @@
                     {% endfor %}
             {% endif %}
         {% endfor %}
-
+<tr><button type="submit" name="button">Save</button></tr>
 </table>
 </form>
 

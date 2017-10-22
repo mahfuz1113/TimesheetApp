@@ -10,15 +10,23 @@ class TimesheetForm(forms.ModelForm):
         fields = "__all__"
 
 class TimesheetDetailPreForm(forms.ModelForm):
-    workcode1 = forms.IntegerField(max_value=16, min_value=0, label='Norm', required=False)
-    workcode2 = forms.IntegerField(max_value=16, min_value=0, label='R&R', required=False)
-    workcode3 = forms.IntegerField(max_value=16, min_value=0, label='AL', required=False)
-    workcode4 = forms.IntegerField(max_value=16, min_value=0, label='SL', required=False)
+    workcode_10  = forms.IntegerField(max_value=16, min_value=0, label='Norm', required=False)
+    workcode_80  = forms.IntegerField(max_value=16, min_value=0, label='RnR', required=False)
+    workcode_20  = forms.IntegerField(max_value=16, min_value=0, label='Annu', required=False)
+    workcode_21  = forms.IntegerField(max_value=16, min_value=0, label='Sick', required=False)
+    workcode_25  = forms.IntegerField(max_value=16, min_value=0, label="Carer", required=False)
+    workcode_26  = forms.IntegerField(max_value=16, min_value=0, label='LSL', required=False)
+    workcode_13  = forms.IntegerField(max_value=16, min_value=0, label='Night', required=False)
+    workcode_14  = forms.IntegerField(max_value=16, min_value=0, label="Noon", required=False)
+    workcode_71  = forms.IntegerField(max_value=16, min_value=0, label='Bus', required=False)
+    workcode_22  = forms.IntegerField(max_value=16, min_value=0, label='WComp', required=False)
 
     class Meta:
         model = models.TimesheetDetail
         # fields = '__all__'
-        fields = ['workdate', 'project', 'hours', 'workcode1', 'workcode2', 'workcode3', 'workcode4', 'workcode',]
+        fields = ['workdate', 'project', 'workcode_10', 'workcode_80',
+                    'workcode_20', 'workcode_21', 'workcode_25','workcode_26',
+                    'workcode_13','workcode_14','workcode_71','workcode_22',]
 
     # def clean_hours(self):
     #     data = 30 #self.data.get('hours')
@@ -203,4 +211,4 @@ TimesheetDetailInlineFormset = inlineformset_factory(models.Timesheet,
                                                     formset=BaseTimesheetInlineFormSet,
                                                     # fields=('workdate','project'),
                                                     fields='__all__',
-                                                    extra=7, max_num=7)
+                                                    extra=7, max_num=9)
