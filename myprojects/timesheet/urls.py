@@ -4,7 +4,7 @@ from .views import *
 app_name = 'timesheet'
 
 urlpatterns = [
-    url('^$', TimesheetDetailListView.as_view(), name='timesheetlist'),
+    url('^$', TimesheetListView.as_view(), name='timesheetlist'),
     url('^timesheet/newlist/(?P<weekenddate>\d{4}-\d{2}-\d{2})/$', TimesheetListView.as_view(), name='timesheetlist-new'),
     url('^timesheet/(?P<pk>[0-9]+)/$',TimesheetDetailView.as_view(), name='timesheetdetail'),
     url('^timesheet/create/$',TimesheetCreateView.as_view(), name='timesheetcreate'),

@@ -42,6 +42,12 @@ INSTALLED_APPS = [
     'timesheet',
     'nestedformset',
     'modalform',
+    'project',
+    'invoice',
+    'quotation',
+    'client',
+    'item',
+    'userprofile'
 ]
 
 MIDDLEWARE = [

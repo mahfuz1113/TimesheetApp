@@ -2,3 +2,4 @@ Django==1.11.6
 django-debug-toolbar==1.8
 pytz==2017.2
 sqlparse==0.2.4
+Faker==0.8.6

@@ -2,10 +2,13 @@
 
 {% block body %}
     <h2>Click to show all timesheets for a weekend:</h2>
-    {% for weekenddate in weekenddate_list %}
-        <p>
-        <a class="navbar-link" href="{% url 'timesheet:timesheetlist-new' weekenddate=weekenddate %}">{{weekenddate.weekenddate}}</a>
-        </p>
-    {% endfor %}
+<table class="table table-bordered table-hover table-sm">
+  {% for weekenddate in weekenddate_list %}
+      <tr>
+      <td><a class="navbar-link" href="{% url 'timesheet:timesheetlist-new' weekenddate=weekenddate %}">{{weekenddate.weekenddate}}</a></td>
+    </tr>
+  {% endfor %}
+</table>
+
 
 {% endblock body %}

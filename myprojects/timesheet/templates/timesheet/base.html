@@ -15,7 +15,7 @@
     <body style="padding-top: 60px;">
     <div class="container">
         <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
-            <a class="navbar-brand" id="project-list" href="#">Project List</a>
+            <a class="navbar-brand" id="project-list" href="{% url 'timesheet:timesheetlist' %}">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -23,8 +23,6 @@
                 <div class="navbar-nav">
 
                     <a class="nav-item nav-link" id="admin" href="{% url 'admin:index' %}">Admin</a>
-                    <a class="nav-item nav-link" id="timesheets" href="{% url 'timesheet:timesheetlist' %}">Timesheets</a>
-
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Manage Timesheet

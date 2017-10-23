@@ -19,9 +19,15 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     url(r'^', include('timesheet.urls')),
-    url(r'^nestedformset/', include('nestedformset.urls')),
-    url(r'^modalform/', include('modalform.urls')),
+    url(r'^client/', include('client.urls')),
+    url(r'^invoice/', include('invoice.urls')),
+    url(r'^item/', include('item.urls')),
+    url(r'^project/', include('project.urls')),
+    url(r'^quotation/', include('quotation.urls')),
+    # Test only not required in production
+    url(r'^nestedformset/', include('nestedformset.urls'))
 ]
 
 if settings.DEBUG:

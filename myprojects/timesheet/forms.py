@@ -1,12 +1,13 @@
 from django import forms
-from . import models
+from .models import *
+from userprofile.models import Profile
 from django.forms.models import formset_factory, inlineformset_factory, BaseInlineFormSet, modelformset_factory, BaseModelFormSet
 from django.contrib.auth.models import User
 
 
 class TimesheetForm(forms.ModelForm):
     class Meta:
-        model = models.Timesheet
+        model = Timesheet
         fields = "__all__"
 
 class TimesheetDetailPreForm(forms.ModelForm):
@@ -22,7 +23,7 @@ class TimesheetDetailPreForm(forms.ModelForm):
     workcode_22  = forms.IntegerField(max_value=16, min_value=0, label='WComp', required=False)
 
     class Meta:
-        model = models.TimesheetDetail
+        model = TimesheetDetail
         # fields = '__all__'
         fields = ['workdate', 'project', 'workcode_10', 'workcode_80',
                     'workcode_20', 'workcode_21', 'workcode_25','workcode_26',
@@ -36,8 +37,8 @@ class TimesheetDetailPreForm(forms.ModelForm):
 
 
 # TimesheetDetailPreForm has extra field added for data collection
-TimesheetFormSet = forms.inlineformset_factory(models.Timesheet,
-                                                models.TimesheetDetail,
+TimesheetFormSet = forms.inlineformset_factory(Timesheet,
+                                                TimesheetDetail,
                                                 form=TimesheetDetailPreForm,
                                                 extra=7, max_num=7)
 
@@ -80,11 +81,11 @@ class BaseTimesheetFormSet(forms.BaseFormSet):
 
 
 
-TimesheetDetailFormSet = forms.formset_factory(models.TimesheetDetail,
+TimesheetDetailFormSet = forms.formset_factory(TimesheetDetail,
                                             formset=BaseTimesheetFormSet
                                             )
 
-TimesheetDetailFormSet1 = forms.formset_factory(models.TimesheetDetail)
+TimesheetDetailFormSet1 = forms.formset_factory(TimesheetDetail)
 
 ############################################################################################
 ############################################################################################
@@ -127,8 +128,8 @@ class BaseTimesheetFormsetNew(BaseInlineFormSet):
 
         return result
 
-TimesheetFormSetNew = inlineformset_factory(models.Employee, models.Timesheet, formset=BaseTimesheetFormsetNew, fields="__all__", extra=1)
-TimesheerDetailFormsetNew = inlineformset_factory(models.Timesheet, models.TimesheetDetail, fields="__all__", extra=1)
+TimesheetFormSetNew = inlineformset_factory(User, Timesheet, formset=BaseTimesheetFormsetNew, fields="__all__", extra=1)
+TimesheerDetailFormsetNew = inlineformset_factory(Timesheet, TimesheetDetail, fields="__all__", extra=1)
 
 ###############################################################
 ###############################################################
@@ -195,18 +196,18 @@ class BaseTimesheetInlineFormSet(BaseInlineFormSet):
         #     kwargs['initial'] = initial
         #     super(BaseTimesheetInlineFormSet, self).__init__(*args, **kwargs)
 
-TimesheetFormSetNew1 = modelformset_factory(models.Timesheet,
+TimesheetFormSetNew1 = modelformset_factory(Timesheet,
                                             form=TimesheetForm,
                                             formset=BaseTimesheetFormsetNew1,
                                             fields="__all__", extra=1)
-TimesheetDetailFormsetNew1 = inlineformset_factory(models.Timesheet,
-                                                    models.TimesheetDetail,
+TimesheetDetailFormsetNew1 = inlineformset_factory(Timesheet,
+                                                    TimesheetDetail,
                                                     form = TimesheetForm,
                                                     formset=BaseTimesheetInlineFormSet,
                                                     fields="__all__",
                                                     extra=7, max_num=7)
-TimesheetDetailInlineFormset = inlineformset_factory(models.Timesheet,
-                                                    models.TimesheetDetail,
+TimesheetDetailInlineFormset = inlineformset_factory(Timesheet,
+                                                    TimesheetDetail,
                                                     form = TimesheetForm,
                                                     formset=BaseTimesheetInlineFormSet,
                                                     # fields=('workdate','project'),
