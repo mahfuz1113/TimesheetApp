@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 class Network(models.Model):
@@ -28,19 +29,23 @@ class Project(models.Model):
     project_code = models.CharField(max_length=10)
     project_description = models.CharField(max_length=50)
     project_manager = models.OneToOneField(User)
-    project_type = models.OneToOneField(ProjectType)
+    project_type = models.ForeignKey(ProjectType)
     project_network = models.ForeignKey(Network)
-    project_status = models.OneToOneField(ProjectStatus)
+    project_status = models.ForeignKey(ProjectStatus)
     project_startdate = models.DateField()
     project_enddate = models.DateField()
-    project_week_number =models.SmallIntegerField()
+    project_week_number =models.SmallIntegerField(editable=False)
     project_location = models.CharField(max_length=50)
     project_actual_cost = models.DecimalField(max_digits=10,decimal_places=2)
     project_actual_revenue = models.DecimalField(max_digits=10, decimal_places=2)
-    project_actual_pgm = models.DecimalField(max_digits=10, decimal_places=2)
+    project_actual_pgm = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
 
     def __str__(self):
         return self.project_code
 
-    def clean_project_week_number(self:
-        self.project_week_number = 5 #project_startdate.isocalender()[1]
+    # def clean_project_week_number(self):
+    #     self.project_week_number = 5 #project_startdate.isocalender()[1]
+    def save(self, *args, **kwargs):
+        self.project_week_number = self.project_startdate.isocalendar()[1]
+        self.project_actual_pgm = self.project_actual_revenue - self.project_actual_cost
+        super(Project, self).save(*args, **kwargs)

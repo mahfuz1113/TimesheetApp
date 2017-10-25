@@ -23,9 +23,6 @@ fakegen = Faker('en_AU')
 #     WeekendDate.objects.get_or_create(weekenddate=weekend_date)
 #     weekend_date = weekend_date + timedelta(weeks=1)
 
-# project_list = ['17-001','17-002','17-003','17-004','17-005','17-006','17-007','17-008','17-009']
-# for proj in project_list:
-#     Project.objects.get_or_create(project_code=proj)
 
 
 # workcode_dict= {'Normal': 10,
@@ -42,14 +39,14 @@ fakegen = Faker('en_AU')
 # for wc in workcode_dict.keys():
 #     # print(wc)
 #     # print(workcode_dict[wc])
-#     Workcode.objects.get_or_create(workcode_description=wc,workcode=workcode_dict[wc] )
+#     Workcode.objects.get_or_create(workcode_description=wc,workcode=workcode_dict[wc], workcode_serial=1 )
 
-# weekend_list = WeekendDate.objects.filter(weekenddate__lte='2017-05-01')
-# emp_list = Employee.objects.all()
-#
-# for we in weekend_list:
-#     for emp in emp_list:
-#         Timesheet.objects.get_or_create(employee=emp, weekenddate=we)
+weekend_list = WeekendDate.objects.filter(weekenddate__lte='2017-05-01')
+emp_list = User.objects.all()
+
+for we in weekend_list:
+    for emp in emp_list:
+        Timesheet.objects.get_or_create(employee=emp, weekenddate=we)
 
 # timesheets = Timesheet.objects.all()
 # workcodes = Workcode.objects.all()
