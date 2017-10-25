@@ -42,5 +42,5 @@ class Project(models.Model):
     def __str__(self):
         return self.project_code
 
-    def save(self, *args, **kwargs):
-        self.project_week_number = project_startdate.isocalender()[1]
+    def clean_project_week_number(self:
+        self.project_week_number = 5 #project_startdate.isocalender()[1]
