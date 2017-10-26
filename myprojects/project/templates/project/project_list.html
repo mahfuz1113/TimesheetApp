@@ -1,0 +1,47 @@
+{% extends "timesheet/base.html" %}
+
+{% block body %}
+
+<p>List of all projects</p>
+  <table class="table table-sm table-hover">
+    <thead>
+        <th></th><th></th><th></th>
+    </thead>
+
+    <tbody>
+
+      {% for project in object_list %}
+        <tr data-toggle="collapse" data-target="#accordion{{project.id}}" class="clickable">
+            <td>{{ project.project_code }}</td>
+            <td>{{ project.project_description }}</td>
+            <td>{{ project.project_week_number }}</td>
+            <td>{{ project.project_startdate }}</td>
+            <td>{{ project.project_enddate }}</td>
+            <td>{{ project.project_location }}</td>
+            <td>{{ project.project_status }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="7">
+                <div id="accordion{{project.id}}" class="collapse">
+                  <table class="table table-sm table-bordered">
+                    <td>{{ project.project_manager }}</td>
+                    <td>{{project.project_type}}</td>
+                    <td>{{project.project_actual_cost}}</td>
+                    <td>{{project.project_actual_revenue}}</td>
+                    <td>{{project.project_actual_pgm}}</td>
+                    <td>{{project.project_network}}</td>
+                  </table>
+
+                  </div>
+                </div>
+            </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+
+
+
+{% endblock %}

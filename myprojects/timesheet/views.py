@@ -54,7 +54,7 @@ class TimesheetListView(ListView):
 
 
         context = super(TimesheetListView, self).get_context_data(**kwargs)
-        timesheetdetails_list = TimesheetDetail.objects.filter(timesheet__weekenddate__weekenddate=self.kwargs.get('weekenddate', '2017-01-04')).select_related('timesheet').select_related('timesheet__employee__username').select_related('workcode').select_related('project').annotate(Sum('hours')).order_by('timesheet', 'workdate')
+        timesheetdetails_list = TimesheetDetail.objects.filter(timesheet__weekenddate__weekenddate=self.kwargs.get('weekenddate', '2017-01-04')).select_related('timesheet').select_related('timesheet__employee').select_related('workcode').select_related('project').annotate(Sum('hours')).order_by('timesheet', 'workdate')
 
         context['timesheetdetails_list'] = timesheetdetails_list
         context['totalhoursbytimesheet'] = timesheetdetails_list.values('timesheet').annotate(Sum('hours')).order_by()

@@ -25,7 +25,7 @@ SECRET_KEY = 'iafi=f&0h&mh$7j)%)5cbo$)3v!y0!(e2d^n(tm^bdy@)r0lj4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
